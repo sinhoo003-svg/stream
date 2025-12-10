@@ -151,7 +151,7 @@ st.markdown(
     """
     ### 📚 "What is your favorite subject?" 차시
     
-    오늘 배운 **"What is your favorite subject?"** 차시에 대한 수업 내용을 챗봇과 대화하며 문제를 풀어봅시다! 🎯
+    오늘 배운 "What is your favorite subject?" 차시에 대한 수업 내용을 챗봇과 대화하며 문제를 풀어봅시다! 🎯
     
     다양한 유형의 문제들을 풀면서 영어 표현을 더욱 완벽하게 익혀보세요! 
    
@@ -162,43 +162,55 @@ st.markdown(
 SUBJECTS = ["Math", "Science", "P.E.", "Art", "Music", "English", "History", "Korean"]
 KOR_SUBJECTS = {"Math": "수학", "Science": "과학", "P.E.": "체육", "Art": "미술", "Music": "음악", "English": "영어", "History": "역사", "Korean": "국어"}
 PHRASES = {
-    "korean_to_english": "이 과목의 영어 이름은 무엇일까요? **{kor}**",
-    "english_to_korean": "이 과목의 한국어 이름은 무엇일까요? **{eng}**",
+    "korean_to_english": "이 과목의 영어 이름은 무엇일까요? {kor}",
+    "english_to_korean": "이 과목의 한국어 이름은 무엇일까요? {eng}",
     "q_pattern": "좋아하는 과목을 묻는 영어 표현은?",
     "a_pattern": "'나는 {kor}을/를 좋아해' 영어 표현은?"
 }
 QUIZ_QUESTIONS = [
     # 1. Subject KOR -> ENG (수학)
-    {"type": "subject_k2e", "kor": "수학", "eng": "Math", "options": ["Science", "Art"]},
+    {"type": "subject_k2e", "kor": "수학", "eng": "Math", "options": ["Science", "Art"], 
+     "explanation": "'수학'은 영어로 'Math'입니다. Science는 과학, Art는 미술을 의미해요."},
     # 2. Subject ENG -> KOR (체육)
-    {"type": "subject_e2k", "eng": "P.E.", "kor": "체육", "options": ["미술", "음악"]},
+    {"type": "subject_e2k", "eng": "P.E.", "kor": "체육", "options": ["미술", "음악"],
+     "explanation": "'P.E.'는 Physical Education의 약자로 '체육'을 의미합니다."},
     # 3. Situation (상황 판단 - 대화 상황)
-    {"type": "situation", "scenario": "친구: \"I like drawing and painting.\" 친구가 무엇을 좋아할까요?", "answer": "Art", "options": ["P.E.", "Music"]},
+    {"type": "situation", "scenario": "친구: \"I like drawing and painting.\" 친구가 무엇을 좋아할까요?", "answer": "Art", "options": ["P.E.", "Music"],
+     "explanation": "drawing(그리기)과 painting(그림 그리기)은 미술(Art)과 관련된 활동입니다."},
     # 4. True/False (참/거짓)
-    {"type": "true_false", "statement": "'I like Art'는 '나는 미술을 좋아해'라는 뜻이다.", "answer": True},
+    {"type": "true_false", "statement": "'I like Art'는 '나는 미술을 좋아해'라는 뜻이다.", "answer": True,
+     "explanation": "'I like Art'는 '나는 미술을 좋아해'라는 뜻이 맞습니다. 'I like + 과목'으로 좋아하는 과목을 표현할 수 있어요."},
     # 5. Question Pattern
-    {"type": "q_pattern", "q_kor": PHRASES["q_pattern"], "eng": "What is your favorite subject?", "options": ["What subject do you like?", "What is your name?"]},
+    {"type": "q_pattern", "q_kor": PHRASES["q_pattern"], "eng": "What is your favorite subject?", "options": ["How old are you?", "Where are you from?"],
+     "explanation": "좋아하는 과목을 물을 때는 'What is your favorite subject?'라고 합니다. 'How old are you?'는 나이를, 'Where are you from?'은 출신지를 묻는 표현이에요."},
     # 6. Answer Pattern (미술)
-    {"type": "a_pattern", "kor": "미술", "eng": "My favorite subject is Art.", "options": ["I like P.E.", "I am sleepy."]},
+    {"type": "a_pattern", "kor": "미술", "eng": "My favorite subject is Art.", "options": ["I like P.E.", "I am sleepy."],
+     "explanation": "'나는 미술을 좋아해'는 'My favorite subject is Art.' 또는 'I like Art.'로 표현합니다."},
     # 7. Subject KOR -> ENG (역사)
-    {"type": "subject_k2e", "kor": "역사", "eng": "History", "options": ["Music", "English"]},
+    {"type": "subject_k2e", "kor": "역사", "eng": "History", "options": ["Music", "English"],
+     "explanation": "'역사'는 영어로 'History'입니다. Music은 음악, English는 영어를 의미해요."},
     # 8. Situation (상황 판단 - 대화 상황)
-    {"type": "situation", "scenario": "학생: \"I enjoy learning about numbers and solving problems.\" 이 학생이 좋아하는 과목은?", "answer": "Math", "options": ["Science", "Korean"]},
+    {"type": "situation", "scenario": "학생: \"I enjoy learning about numbers and solving problems.\" 이 학생이 좋아하는 과목은?", "answer": "Math", "options": ["Science", "Korean"],
+     "explanation": "numbers(숫자)와 solving problems(문제 풀기)는 수학(Math)과 관련된 활동입니다."},
     # 9. True/False (참/거짓)
-    {"type": "true_false", "statement": "'What is your favorite subject?'는 좋아하는 과목을 묻는 표현이다.", "answer": True},
+    {"type": "true_false", "statement": "'What is your favorite subject?'는 좋아하는 과목을 묻는 표현이다.", "answer": True,
+     "explanation": "'What is your favorite subject?'는 '좋아하는 과목이 무엇인가요?'라는 뜻으로, 좋아하는 과목을 묻는 표현이 맞습니다."},
     # 10. Subject ENG -> KOR (영어)
-    {"type": "subject_e2k", "eng": "English", "kor": "영어", "options": ["국어", "과학"]},
+    {"type": "subject_e2k", "eng": "English", "kor": "영어", "options": ["국어", "과학"],
+     "explanation": "'English'는 '영어'를 의미합니다. 국어는 Korean, 과학은 Science예요."},
     # 11. Situation (상황 판단 - 왜 그럴까?)
-    {"type": "situation_why", "scenario": "학생이 \"My favorite subject is Music.\"이라고 했습니다. 왜 음악을 좋아할까요?", "answer": "I enjoy singing and playing instruments.", "options": ["I like running and sports.", "I like reading books."]},
+    {"type": "situation_why", "scenario": "학생이 \"My favorite subject is Music.\"이라고 했습니다. 왜 음악을 좋아할까요?", "answer": "I enjoy singing and playing instruments.", "options": ["I like running and sports.", "I like reading books."],
+     "explanation": "음악을 좋아하는 이유는 노래하기(singing)와 악기 연주(playing instruments)를 즐기기 때문입니다. running and sports는 체육, reading books는 독서와 관련된 활동이에요."},
     # 12. Answer Pattern (음악)
-    {"type": "a_pattern", "kor": "음악", "eng": "I like Music.", "options": ["My favorite is Science.", "It is boring."]}
+    {"type": "a_pattern", "kor": "음악", "eng": "I like Music.", "options": ["My favorite is Science.", "It is boring."],
+     "explanation": "'나는 음악을 좋아해'는 'I like Music.'으로 표현합니다. 'My favorite is Science.'는 과학을 좋아한다는 뜻이에요."}
 ]
 
 
 # --- Streamlit 상태 관리 초기화 및 리셋 로직 ---
 def clear_session():
     """모든 세션 상태를 초기값으로 재설정합니다."""
-    # 퀴즈 데이터 순서 고정 (random.shuffle 제거)
+    # 퀴즈 데이터 순서 고정 - 단계별로 풀 수 있도록 섞지 않음
     st.session_state.quiz_data = QUIZ_QUESTIONS.copy()
     
     st.session_state.history = []
@@ -240,21 +252,21 @@ def generate_question():
         options = q_data["options"] + [q_data["eng"]]
         correct_answer = q_data["eng"]
     elif q_data["type"] == "situation":
-        question = f"🎭 **만약 이런 상황이라면?**\n\n{q_data['scenario']}"
+        question = f"🎭 만약 이런 상황이라면?\n\n{q_data['scenario']}"
         options = q_data["options"] + [q_data["answer"]]
         correct_answer = q_data["answer"]
     elif q_data["type"] == "situation_why":
-        question = f"❓ **왜 그럴까?**\n\n{q_data['scenario']}"
+        question = f"❓왜 그럴까?\n\n{q_data['scenario']}"
         options = q_data["options"] + [q_data["answer"]]
         correct_answer = q_data["answer"]
     elif q_data["type"] == "true_false":
-        question = f"⭕ 참/거짓: **{q_data['statement']}**"
+        question = f"⭕ 참/거짓: {q_data['statement']}"
         options = ["✅ 참 (O)", "❌ 거짓 (X)"]
         correct_answer = "✅ 참 (O)" if q_data["answer"] else "❌ 거짓 (X)"
         random.shuffle(options)
         st.session_state.correct_answer = correct_answer
         st.session_state.options = options
-        return f"**Sinu** | {question}"
+        return f"Sinu | {question}"
     else:
         # 기타 타입
         question = "문제를 불러올 수 없습니다."
@@ -266,7 +278,7 @@ def generate_question():
     st.session_state.correct_answer = correct_answer
     st.session_state.options = options
     
-    return f"**Sinu** | {question}"
+    return f"Sinu | {question}"
 
 def generate_next_question_and_update_history():
     """다음 질문을 생성하고 history에 추가합니다."""
@@ -283,13 +295,22 @@ def handle_answer(selected_option):
     
     is_correct = selected_option == st.session_state.correct_answer
     
+    # 현재 문제 데이터 가져오기
+    q_index = st.session_state.current_q_index
+    q_data = st.session_state.quiz_data[q_index]
+    
     # 1. 채점 및 기록
     st.session_state.score["total"] += 1
     if is_correct:
         st.session_state.score["correct"] += 1
-        feedback = "✅ **정답입니다!** 정말 잘했어요! 🎉✨"
+        feedback = "✅ 정답입니다! 정말 잘했어요! 🎉✨"
     else:
-        feedback = f"❌ **아쉽지만 틀렸어요!** 😢\n\n**정답:** '{st.session_state.correct_answer}'\n\n다음 문제를 풀어보세요!"
+        # 설명이 있으면 포함, 없으면 기본 피드백
+        explanation = q_data.get("explanation", "")
+        if explanation:
+            feedback = f"❌ 아쉽지만 틀렸어요! 😢\n\n정답: '{st.session_state.correct_answer}'\n\n💡 {explanation}\n\n다음 문제를 풀어보세요!"
+        else:
+            feedback = f"❌ 아쉽지만 틀렸어요! 😢\n\n정답: '{st.session_state.correct_answer}'\n\n다음 문제를 풀어보세요!"
         
     st.session_state.history.append({"role": "user", "text": selected_option})
     st.session_state.history.append({"role": "model", "text": feedback})
@@ -440,26 +461,44 @@ def render_chat_page():
     </style>
     """, unsafe_allow_html=True)
     
-    chat_container = st.container(height=280, border=True)
+    # Show only last 4 messages to save space
+    recent_messages = st.session_state.history[-4:] if len(st.session_state.history) > 4 else st.session_state.history
+    
+    chat_container = st.container(height=200, border=True)
     with chat_container:
-        for i, message in enumerate(st.session_state.history):
+        for i, message in enumerate(recent_messages):
             role_class = "user" if message["role"] == "user" else "model"
             avatar_char = "⭐" if message["role"] == "model" else "🧑‍🎓"
             
             st.markdown(f"""
-            <div class="chat-message {role_class}">
+            <div class="chat-message {role_class}" id="msg-{i}">
                 <div class="chat-avatar">{avatar_char}</div>
                 <div class="chat-bubble {role_class}">
                     {message["text"]}
                 </div>
             </div>
             """, unsafe_allow_html=True)
+        
+        # Add a scroll anchor at the bottom
+        st.markdown('<div id="chat-bottom"></div>', unsafe_allow_html=True)
+    
+    # Auto-scroll script - place outside container
+    st.markdown(f"""
+    <script>
+    setTimeout(function() {{
+        var chatBottom = window.parent.document.getElementById('chat-bottom');
+        if (chatBottom) {{
+            chatBottom.scrollIntoView({{ behavior: 'smooth', block: 'end' }});
+        }}
+    }}, 100);
+    </script>
+    """, unsafe_allow_html=True)
     
     # 2. 퀴즈 버튼 영역
     if not st.session_state.is_finished:
         st.markdown("---")
-        st.markdown('<div class="scroll-target"></div>', unsafe_allow_html=True)
-        st.markdown(f"**Sinu:** 이제 당신의 답변을 선택해주세요! 🎯 (문제 {st.session_state.current_q_index + 1}/{len(st.session_state.quiz_data)})")
+        st.markdown('<div id="question-area"></div>', unsafe_allow_html=True)
+        st.markdown(f"Sinu: 이제 당신의 답변을 선택해주세요! 🎯 (문제 {st.session_state.current_q_index + 1}/{len(st.session_state.quiz_data)})")
         
         # st.session_state.options의 크기가 0보다 클 때만 columns를 호출합니다.
         if len(st.session_state.options) > 0:
@@ -478,12 +517,24 @@ def render_chat_page():
         else:
             # 옵션이 없는 경우 대기 메시지 
             st.info("퀴즈를 로딩 중입니다...")
+        
+        # Auto-scroll to question area
+        st.markdown("""
+        <script>
+        setTimeout(function() {
+            var questionArea = window.parent.document.getElementById('question-area');
+            if (questionArea) {
+                questionArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 200);
+        </script>
+        """, unsafe_allow_html=True)
 
 
 # 3. 종료 후 '결과 확인하기' 버튼
     if st.session_state.is_finished and not st.session_state.is_report_shown:
         st.markdown("---")
-        st.markdown("**🎉 수업이 끝났어요!** 아래 버튼을 눌러서 학습 결과를 확인해 보세요! 👇")
+        st.markdown("🎉 수업이 끝났어요! 아래 버튼을 눌러서 학습 결과를 확인해 보세요! 👇")
         if st.button("📊 결과 확인하기", type="secondary", use_container_width=True):
             st.session_state.is_report_shown = True
             st.rerun()
@@ -493,12 +544,22 @@ def render_chat_page():
 def app_main():
     """Streamlit 애플리케이션의 메인 진입점"""
     
-    # 앱 시작 시 첫 질문 자동 생성 및 history 업데이트
+    # 퀴즈 시작 전 화면
     if st.session_state.current_q_index == -1:
-        # 첫 퀴즈 질문을 생성하고 인덱스 업데이트
-        st.session_state.current_q_index = 0
-        initial_question = generate_question()
-        st.session_state.history.append({"role": "model", "text": initial_question})
+        st.markdown("""<div style='text-align: center; padding: 60px 20px;'>
+            <h1 style='font-size: 48px; margin-bottom: 20px;'>🎓 Sinu Teacher's Fun English Time</h1>
+            <p style='font-size: 20px; color: #666; margin-bottom: 40px;'>재미있는 영어 퀴즈로 실력을 쌓아보세요!</p>
+        </div>""", unsafe_allow_html=True)
+        
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button("🚀 퀴즈 시작하기", type="primary", use_container_width=True):
+                # 첫 퀴즈 질문을 생성하고 인덱스 업데이트
+                st.session_state.current_q_index = 0
+                initial_question = generate_question()
+                st.session_state.history.append({"role": "model", "text": initial_question})
+                st.rerun()
+        return
     
     # 화면 랜더링 분기
     if st.session_state.is_finished and st.session_state.is_report_shown:
@@ -508,4 +569,3 @@ def app_main():
 
 if __name__ == "__main__":
     app_main()
-
